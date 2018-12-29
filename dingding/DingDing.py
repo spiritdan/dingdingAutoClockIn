@@ -13,8 +13,8 @@ scheduler = sched.scheduler(time.time,time.sleep)
 go_hour = config.get("time","go_time")
 back_hour = config.get("time","off_time")
 directory = config.get("ADB","directory")
-
 screen_dir = config.get("screen","screen_dir")
+stagger_min=config.get("time","random_min")
 if not os.path.exists(screen_dir):
     os.makedirs(screen_dir)
 
@@ -29,10 +29,11 @@ strTime = time.strftime("%Y%m%d%H%M%S", timeStruct)
 # 打开钉钉，关闭钉钉封装为一个妆饰器函数
 def with_open_close_dingding(func):
     def wrapper(self, *args, **kwargs):
-        #随机数，错开打卡时间，0为没有延迟
-        minute = random_minute(0)
+        #随机数，错开打卡时间，0为没有延迟，参数在dingding.cfg配置random_min
+        minute = random_minute(int(stagger_min))
+        print("程序启动，休眠{0}秒".format(minute))
         time.sleep(minute)
-        print("程序启动，休眠{0}分钟".format(minute))
+
         print("打开钉钉")
         boolawake=ifawake()
         boollock=ifLock()

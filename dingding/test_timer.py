@@ -34,7 +34,7 @@ def job_offwork():
     print("开始下班打卡调度")
     if holiday_status == 0:
         dingding = Ding.dingding(directory)
-        png = dingding.off_work()
+        png = dingding.after_work()
         print(dingding.filename)
     else:
         print('今天不干活')
