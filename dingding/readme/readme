@@ -1,8 +1,7 @@
 DingDing.py是主要功能，其他test都是不同形式的调用test.py是直接调用，test_timer.py加入了计划任务，test_wx使用加入计划任务和微信通知
 基本参数配置在dingding.cfg
 
-1，需要安装adb，下载地址：
-https://adb.clockworkmod.com/
+1，需要安装adb，下载地址：https://adb.clockworkmod.com/
 可以把ADB路径加入环境变量，便于操作
 C:\Program Files (x86)\ClockworkMod\Universal Adb Driver
 安装完成后，连上USB输入adb devices可以看到连接的手机
