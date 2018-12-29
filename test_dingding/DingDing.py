@@ -115,8 +115,8 @@ class dingding:
     def goto_work(self):
         #点击上班按钮
         print('点击上班按钮')
-        operation_list = [self.adbselect_checkposition]
-        #operation_list = [self.adbselect_check_position_card]
+        #operation_list = [self.adbselect_checkposition]
+        operation_list = [self.adbselect_check_position_card]
 
         for operation in operation_list:
             process = subprocess.Popen(operation, shell=False, stdout=subprocess.PIPE)
@@ -132,8 +132,8 @@ class dingding:
     def after_work(self):
         #点击下班按钮
         print('点击下班按钮')
-        #operation_list = [self.adbselect_check_position_card]
-        operation_list = [self.adbclick_playcard]
+        operation_list = [self.adbselect_check_position_card]
+        #operation_list = [self.adbclick_playcard]
         for operation in operation_list:
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
