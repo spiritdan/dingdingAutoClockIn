@@ -1,4 +1,4 @@
-from test_dingding import holiday as holiday, DingDing as Ding
+import holiday as holiday, DingDing as Ding
 import time
 import configparser
 

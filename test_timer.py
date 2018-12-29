@@ -1,6 +1,6 @@
 import schedule
 import time
-from test_dingding import holiday as holiday, DingDing as Ding
+import holiday as holiday, DingDing as Ding
 import configparser
 
 config = configparser.ConfigParser(allow_no_value=False)
