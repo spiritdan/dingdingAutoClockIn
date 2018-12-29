@@ -3,6 +3,7 @@ import time
 import schedule
 import holiday as holiday, DingDing as Ding
 import configparser
+import check_holiday
 
 config = configparser.ConfigParser(allow_no_value=False)
 config.read("dingding.cfg")
@@ -15,8 +16,11 @@ timeStruct = time.localtime(now)
 year = timeStruct.tm_year
 month = timeStruct.tm_mon
 day = timeStruct.tm_mday
+
 #工作日对应结果为 0, 休息日对应结果为 1, 节假日对应的结果为 2；
-holiday_status= holiday.check_holiday(year, month, day)
+date="{0}{1:02d}{2:02d}".format(year,month,day)
+holiday_status=check_holiday.checkholiday(date)['work_status']
+print(holiday_status)
 
 bot = Bot(qr_path="qr.png",cache_path=True)
 my_friend = bot.friends().search('spirit', sex=MALE, city='苏州')[0]

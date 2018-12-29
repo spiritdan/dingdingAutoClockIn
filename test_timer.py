@@ -2,6 +2,7 @@ import schedule
 import time
 import holiday as holiday, DingDing as Ding
 import configparser
+import check_holiday
 
 config = configparser.ConfigParser(allow_no_value=False)
 config.read("dingding.cfg")
@@ -15,7 +16,9 @@ year = timeStruct.tm_year
 month = timeStruct.tm_mon
 day = timeStruct.tm_mday
 #工作日对应结果为 0, 休息日对应结果为 1, 节假日对应的结果为 2；
-holiday_status= holiday.check_holiday(year, month, day)
+date="{0}{1:02d}{2:02d}".format(year,month,day)
+holiday_status=check_holiday.checkholiday(date)['work_status']
+print(holiday_status)
 
 
 def job_gowork():
