@@ -57,7 +57,7 @@ def check_holiday(year):
 
 if __name__ == "__main__":
     #日期改一下，内容是叠加的
-    new_dict_calendar=check_holiday(2018)
+    new_dict_calendar=check_holiday(2019)
     with open('calendar.json', 'r+',encoding="utf-8") as f:
         dict_calendar=json.loads(f.read())
         f.seek(0)
@@ -70,3 +70,5 @@ if __name__ == "__main__":
         f.close()
     #with open('calendar.json', 'w+') as f:
     #    json.dump(calendar, f)
+
+
