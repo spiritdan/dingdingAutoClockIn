@@ -8,7 +8,7 @@ import configparser
 import os
 
 config = configparser.ConfigParser(allow_no_value=False)
-config.read("dingding.cfg")
+config.read("dingding.cfg", encoding='utf-8')
 scheduler = sched.scheduler(time.time,time.sleep)
 go_hour = config.get("time","go_time")
 back_hour = config.get("time","off_time")
