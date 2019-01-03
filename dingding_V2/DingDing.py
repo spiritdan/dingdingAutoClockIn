@@ -115,8 +115,8 @@ class dingding:
     def goto_work(self):
         #点击上班按钮
         print('点击上班按钮')
-        #operation_list = [self.adbselect_checkposition]
-        operation_list = [self.adbselect_check_position_card]
+        operation_list = [self.adbselect_checkposition]
+        #operation_list = [self.adbselect_check_position_card]
 
         for operation in operation_list:
             process = subprocess.Popen(operation, shell=False, stdout=subprocess.PIPE)
@@ -132,8 +132,8 @@ class dingding:
     def after_work(self):
         #点击下班按钮
         print('点击下班按钮')
-        #operation_list = [self.adbclick_playcard]
-        operation_list = [self.adbselect_check_position_card]
+        operation_list = [self.adbclick_playcard]
+        #operation_list = [self.adbselect_check_position_card]
         for operation in operation_list:
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
@@ -157,7 +157,7 @@ def ifawake():
     process = subprocess.Popen(adbawake, shell=True, stdout=subprocess.PIPE)
     process.wait()
     for line in process.stdout.readlines():
-        ##blow for pycharm and cygwin show chinese#
+        #blow for pycharm and cygwin show chinese#
         output = line.decode('utf-8')
         bool_Awake = output.split('=')[-1].strip()
         #print(output)

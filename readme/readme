@@ -2,7 +2,7 @@ DingDing.py是主要功能，其他test都是不同形式的调用test.py是直�
 基本参数配置在dingding.cfg
 V1仅支持微信给朋友发通知
 V2支持给自己文件助手通知
-V3操作指令在配置文件定义（未完成）
+V3操作指令在配置文件定义
 
 1，需要安装adb，下载地址：https://adb.clockworkmod.com/
 可以把ADB路径加入环境变量，便于操作
