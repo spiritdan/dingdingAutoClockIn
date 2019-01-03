@@ -19,15 +19,17 @@ def checkholiday(date):
         dict_calendar=calendar[date]
     except Exception as e:
         print(e)
+        print("日历读取失败，切为手动设置模式")
         if date in off_day:
-            dict_calendar={'work_status': 2, 'wday': '今天设置为休息'}
+            dict_calendar={'work_status': 2, 'wday': '今天设置为休息日'}
         else:
-            dict_calendar = {'work_status': 0, 'wday': '默认设置上班打卡'}
+            dict_calendar = {'work_status': 0, 'wday': '今天设置为上班打卡'}
     if enable_calendar.lower() == 'false':
+        print('选择为手动设置休息日模式')
         if date in off_day:
-            dict_calendar={'work_status': 2, 'wday': '今天设置为休息'}
+            dict_calendar={'work_status': 2, 'wday': '今天设置为休息日'}
         else:
-            dict_calendar = {'work_status': 0, 'wday': '默认设置上班打卡'}
+            dict_calendar = {'work_status': 0, 'wday': '默认设置为上班打卡'}
     return dict_calendar
 
 if __name__ == "__main__":
