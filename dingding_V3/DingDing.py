@@ -111,7 +111,6 @@ class dingding:
 
             process = subprocess.Popen(operation, shell=False, stdout=subprocess.PIPE)
             process.wait()
-            print(operation)
             print('等待{0}秒'.format(sleep_time))
             time.sleep(sleep_time)
         self.screencap()
@@ -131,7 +130,6 @@ class dingding:
 
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
-            print(operation)
             time.sleep(sleep_time)
 
         self.screencap()
