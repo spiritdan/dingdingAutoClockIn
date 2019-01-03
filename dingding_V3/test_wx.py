@@ -11,7 +11,6 @@ config.read("dingding.cfg", encoding='utf-8')
 directory = config.get("ADB","directory")
 gowork_time=config.get("time","go_time")
 offwork_time=config.get("time","off_time")
-random_min=config.get("time","random_min")
 stagger_min=config.get("time","random_min")
 #target "self_"为微信助手 或者输入用户名发送给其他人。
 #target="self_"
@@ -53,7 +52,6 @@ def job_gowork():
         #print("程序启动，休眠{0}秒".format(second))
         msg='今天是：{0}-{1:02d}-{2:02d},{3},将在{4}打卡'.format(year, month, day, choliday['wday'],str_time)
         print(msg)
-        print(second)
         bot_target.send(msg)
         time.sleep(second)
         try:
@@ -68,8 +66,9 @@ def job_gowork():
             bot_target.send('打卡失败:' + e)
             exit()
     else:
-        print('今天是：{0}-{1:02d}-{2:02d},{3},今天不用打卡'.format(year, month, day, choliday['wday']))
-        bot_target.send('今天是：{0}-{1:02d}-{2:02d},{3},今天不用打卡'.format(year, month, day, choliday['wday']))
+        msg='今天是：{0}-{1:02d}-{2:02d},{3},今天不用打卡'.format(year, month, day, choliday['wday'])
+        print(msg)
+        bot_target.send(msg)
 
 
 def job_offwork():
@@ -95,8 +94,9 @@ def job_offwork():
             bot_target.send('打卡失败:' + e)
             exit()
     else:
-        print('今天是：{0}-{1:02d}-{2:02d},{3},今天不用打卡'.format(year, month, day, choliday['wday']))
-        bot_target.send('今天是：{0}-{1:02d}-{2:02d},{3},今天不用打卡'.format(year, month, day, choliday['wday']))
+        msg='今天是：{0}-{1:02d}-{2:02d},{3},今天不用打卡'.format(year, month, day, choliday['wday'])
+        print(msg)
+        bot_target.send(msg)
 def random_minute(min):
     return random.randint(0,60*min)
 

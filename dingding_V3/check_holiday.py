@@ -7,6 +7,7 @@ import os
 config = configparser.ConfigParser(allow_no_value=False)
 config.read("dingding.cfg", encoding='utf-8')
 off_day = config.get("time","exception").split(",")
+enable_calendar = config.get("time","enable_calendar")
 try:
     with open('calendar.json', 'r') as f:
         calendar = json.load(fp=f)
@@ -22,10 +23,15 @@ def checkholiday(date):
             dict_calendar={'work_status': 2, 'wday': '今天设置为休息'}
         else:
             dict_calendar = {'work_status': 0, 'wday': '默认设置上班打卡'}
+    if enable_calendar.lower() == 'false':
+        if date in off_day:
+            dict_calendar={'work_status': 2, 'wday': '今天设置为休息'}
+        else:
+            dict_calendar = {'work_status': 0, 'wday': '默认设置上班打卡'}
     return dict_calendar
 
 if __name__ == "__main__":
-    dict_calendar=checkholiday("20200106")
+    dict_calendar=checkholiday("20190107")
     print(dict_calendar)
     '''
     now = int(time.time())
