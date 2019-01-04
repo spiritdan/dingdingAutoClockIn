@@ -4,24 +4,23 @@ V1仅支持微信给朋友发通知
 V2支持给自己文件助手通知
 V3操作指令在配置文件定义
 
-1，需要安装adb，下载地址：https://adb.clockworkmod.com/
-可以把ADB路径加入环境变量，便于操作
+
+1，手机需要root，并打开 开发者模式，连接USB后传输协议选择MTP
+
+2，需要安装adb，下载地址：https://adb.clockworkmod.com/
+把ADB路径加入dingding.cfg中，如
 C:\Program Files (x86)\ClockworkMod\Universal Adb Driver
 安装完成后，连上USB输入adb devices可以看到连接的手机
 
-2，手机需要打开开发者模式，连接USB后传输协议选择MTP
-
 3，手机上坐标定位需要自己改，参数在dingding.cfg
-截屏
-adb shell screencap -p sdcard/screen.png
-把截屏发送到本地
-adb shell pull sdcard/screen.png d:\\screen.png
+执行screen_cap.py把截图存到本地
 用mspaint打开图片,用光标定位按键的位置，详见图片sample01和sample02
 
 4，这里没有考虑手机加密码的情况，所以解锁密码要关掉，要处理自动输入密码原理是一样的。
 
 5，代码调试时候把点击打卡按钮注释了，只print了操作，需要改回来才能打卡
 
-6,节假日已经爬去到本地calendar.jason了，只有2019年所有的节假日，以后年底前需要，再跑一遍calendar_spider.py，如果网站没有改版的话：）
+6,节假日已经爬去到本地calendar.jason了，只有2019年所有的节假日，以后年底前需要，再跑一遍
+calendar_spider.py，比如2020年就在main函数里修改为new_dict_calendar=check_holiday('2020')
 
 7,微信只支持发500k以下的图片，格式必须png。如果截图太大发送会失败.如果可以考虑自己做个压缩，或者换成邮件、QQ等方式通知
