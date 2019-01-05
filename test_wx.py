@@ -40,6 +40,7 @@ time.sleep(10)
 
 def job_gowork():
     print("开始上班打卡调度")
+
     if holiday_status == 0:
         try:
             dingding = Ding.dingding(directory)
@@ -79,6 +80,22 @@ def job_offwork():
             exit()
     else:
         bot_target.send('今天不干活')
+
+def checkday():
+    now = int(time.time())
+    timeStruct = time.localtime(now)
+    year = timeStruct.tm_year
+    month = timeStruct.tm_mon
+    day = timeStruct.tm_mday
+
+    # 工作日对应结果为 0, 休息日对应结果为 1, 节假日对应的结果为 2；
+    date = "{0}{1:02d}{2:02d}".format(year, month, day)
+    choliday = check_holiday.checkholiday(date)
+    print(choliday)
+    return choliday
+
+
+
 
 schedule.every().day.at(gowork_time).do(job_gowork)
 schedule.every().day.at(offwork_time).do(job_offwork)
