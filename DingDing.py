@@ -8,13 +8,15 @@ import configparser
 import os
 
 config = configparser.ConfigParser(allow_no_value=False)
-config.read("dingding.cfg")
-scheduler = sched.scheduler(time.time,time.sleep)
+config.read("dingding.cfg", encoding='utf-8')
 go_hour = config.get("time","go_time")
 back_hour = config.get("time","off_time")
 directory = config.get("ADB","directory")
 screen_dir = config.get("screen","screen_dir")
 stagger_min=config.get("time","random_min")
+gowork_flow=config.get("operation","gowork_flow")
+afterwork_flow=config.get("operation","afterwork_flow")
+sleep_time=int(config.get("operation","sleep_time"))
 if not os.path.exists(screen_dir):
     os.makedirs(screen_dir)
 
@@ -30,11 +32,8 @@ strTime = time.strftime("%Y%m%d%H%M%S", timeStruct)
 def with_open_close_dingding(func):
     def wrapper(self, *args, **kwargs):
         #随机数，错开打卡时间，0为没有延迟，参数在dingding.cfg配置random_min
-        minute = random_minute(int(stagger_min))
-        print("程序启动，休眠{0}秒".format(minute))
-        time.sleep(minute)
 
-        print("打开钉钉")
+
         boolawake=ifawake()
         boollock=ifLock()
 
@@ -42,29 +41,23 @@ def with_open_close_dingding(func):
         #判断是不是需要唤醒
         if boolawake=='false':
             print('手机处于休眠状态，唤醒手机，解锁手机，运行钉钉')
-            operation_list = [self.adbpower, self.adbclear, self.adbopen_dingding]
+            operation_list = [self.adbpower, self.adbclear,self.adbkill_dingding, self.adbopen_dingding]
         elif boollock=='true':
             print("手机处于锁定状态，解锁手机，运行钉钉")
-            operation_list = [self.adbclear, self.adbopen_dingding]
+            operation_list = [self.adbclear, self.adbkill_dingding,self.adbopen_dingding]
         else:
             print("手机处于解锁状态，直接运行钉钉")
-            operation_list = [self.adbopen_dingding]
+            operation_list = [self.adbkill_dingding,self.adbopen_dingding]
 
         for operation in operation_list:
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
+            time.sleep(5)
         # 确保完全启动，并且加载上相应按键
-        time.sleep(2)
+
         print("open dingding success")
         print("进入打卡界面")
-        operation_list1 = [self.adbselect_work, self.adbselect_check_position_card]
 
-        for operation in operation_list1:
-            process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
-            process.wait()
-            time.sleep(20)
-        time.sleep(2)
-        print("open playcard success")
 
         # 包装函数
         func(self, *args, **kwargs)
@@ -86,21 +79,17 @@ class dingding:
         # 点亮屏幕
         self.adbpower = '"%s\\adb" shell input keyevent 26' % directory
         # 滑屏解锁
-        self.adbclear = '"%s\\adb" shell input swipe %s' % (directory,config.get("position","light_position"))
+        self.adbclear = '"%s\\adb" shell input swipe %s' % (directory, config.get("position", "light_position"))
         # 启动钉钉应用
         self.adbopen_dingding = '"%s\\adb" shell monkey -p com.alibaba.android.rimet -c android.intent.category.LAUNCHER 1' %directory
         # 关闭钉钉
         self.adbkill_dingding = '"%s\\adb" shell am force-stop com.alibaba.android.rimet'% directory
         # 返回桌面
         self.adbback_index = '"%s\\adb" shell input keyevent 3' % directory
-        # 点击工作标签
-        self.adbselect_work = '"%s\\adb" shell input tap %s' % (directory,config.get("position","work_position"))
-        # 点击考勤打卡标签
-        self.adbselect_check_position_card = '"%s\\adb" shell input tap %s' % (directory,config.get("position","check_tap_position"))
-        # 点击考勤按钮
-        self.adbselect_checkposition = '"%s\\adb" shell input tap %s' % (directory,config.get("position","check_position"))
-        # 点击下班打卡按钮
-        self.adbclick_playcard = '"%s\\adb" shell input tap %s' % (directory,config.get("position","play_position"))
+        # 滑屏
+        self.adb_swipe = '"%s\\adb" shell input swipe' % (directory)
+        # 点击
+        self.adb_tap = '"%s\\adb" shell input tap' % (directory)
         # 设备截屏保存到sdcard
         self.adbscreencap = '"%s\\adb" shell screencap -p sdcard/screen%s.png' % (directory,strTime)
         # 传送到计算机
@@ -116,12 +105,16 @@ class dingding:
         #点击上班按钮
         print('点击上班按钮')
         #operation_list = [self.adbselect_checkposition]
-        operation_list = [self.adbselect_check_position_card]
+        operation_list = gowork_flow.split('|')
 
-        for operation in operation_list:
+        for cmd in operation_list:
+            operation=self.commond_generate(cmd)
+
             process = subprocess.Popen(operation, shell=False, stdout=subprocess.PIPE)
+
+            print('等待{0}秒'.format(sleep_time))
+            time.sleep(sleep_time)
             process.wait()
-            time.sleep(3)
         self.screencap()
         print("打卡成功")
 
@@ -133,13 +126,16 @@ class dingding:
         #点击下班按钮
         print('点击下班按钮')
         #operation_list = [self.adbclick_playcard]
-        operation_list = [self.adbselect_check_position_card]
-        for operation in operation_list:
+        operation_list = afterwork_flow.split('|')
+        for cmd in operation_list:
+            operation = self.commond_generate(cmd)
+
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
-            time.sleep(3)
+            time.sleep(sleep_time)
 
         self.screencap()
+        print('等待{0}秒'.format(sleep_time))
         print("afterwork playcard success")
 
 
@@ -150,6 +146,22 @@ class dingding:
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
         print("screencap to computer success")
+
+    def commond_generate(self,cmd):
+        operation = cmd.replace("swipe", self.adb_swipe).replace("tap", self.adb_tap)
+        return operation
+
+    def random_minute(self,min):
+        return random.randint(0, 60 * min)
+
+    def string_toDatetime(self,st, seconds):
+        dt = datetime.datetime.strptime(st, "%H:%M")
+        # print(dt)
+        new_dt = dt + datetime.timedelta(seconds=int('+{0}'.format(seconds)))
+        str_dt = new_dt.strftime("%H:%M")
+        print('随机到：', str_dt, '开始')
+        return str_dt
+
 
 def ifawake():
     adbawake = '"%s\\adb" shell dumpsys window policy|find /I "mAwake"'% directory

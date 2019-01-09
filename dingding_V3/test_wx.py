@@ -1,7 +1,7 @@
 from wxpy import *
 import time
 import schedule
-import holiday as holiday, DingDing as Ding
+import holiday, DingDing as Ding
 import configparser
 import check_holiday
 import random

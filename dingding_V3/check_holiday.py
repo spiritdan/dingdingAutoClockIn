@@ -33,7 +33,7 @@ def checkholiday(date):
     return dict_calendar
 
 if __name__ == "__main__":
-    dict_calendar=checkholiday("20190107")
+    dict_calendar=checkholiday("20190109")
     print(dict_calendar)
     '''
     now = int(time.time())

@@ -41,19 +41,20 @@ def with_open_close_dingding(func):
         #判断是不是需要唤醒
         if boolawake=='false':
             print('手机处于休眠状态，唤醒手机，解锁手机，运行钉钉')
-            operation_list = [self.adbpower, self.adbclear, self.adbopen_dingding]
+            operation_list = [self.adbpower, self.adbclear,self.adbkill_dingding, self.adbopen_dingding]
         elif boollock=='true':
             print("手机处于锁定状态，解锁手机，运行钉钉")
-            operation_list = [self.adbclear, self.adbopen_dingding]
+            operation_list = [self.adbclear, self.adbkill_dingding,self.adbopen_dingding]
         else:
             print("手机处于解锁状态，直接运行钉钉")
-            operation_list = [self.adbopen_dingding]
+            operation_list = [self.adbkill_dingding,self.adbopen_dingding]
 
         for operation in operation_list:
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
-        # 确保完全启动，并且加载上相应按键
-        time.sleep(2)
+            # 确保完全启动，并且加载上相应按键
+            time.sleep(sleep_time)
+
         print("open dingding success")
         print("进入打卡界面")
 
@@ -113,6 +114,7 @@ class dingding:
             process.wait()
             print('等待{0}秒'.format(sleep_time))
             time.sleep(sleep_time)
+
         self.screencap()
         print("打卡成功")
 
@@ -130,10 +132,11 @@ class dingding:
 
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
+            print('等待{0}秒'.format(sleep_time))
             time.sleep(sleep_time)
 
         self.screencap()
-        print('等待{0}秒'.format(sleep_time))
+
         print("afterwork playcard success")
 
 
