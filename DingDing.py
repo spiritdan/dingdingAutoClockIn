@@ -52,8 +52,8 @@ def with_open_close_dingding(func):
         for operation in operation_list:
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
-            time.sleep(5)
-        # 确保完全启动，并且加载上相应按键
+            # 确保完全启动，并且加载上相应按键
+            time.sleep(sleep_time)
 
         print("open dingding success")
         print("进入打卡界面")
@@ -111,10 +111,10 @@ class dingding:
             operation=self.commond_generate(cmd)
 
             process = subprocess.Popen(operation, shell=False, stdout=subprocess.PIPE)
-
+            process.wait()
             print('等待{0}秒'.format(sleep_time))
             time.sleep(sleep_time)
-            process.wait()
+
         self.screencap()
         print("打卡成功")
 
@@ -132,10 +132,11 @@ class dingding:
 
             process = subprocess.Popen(operation, shell=False,stdout=subprocess.PIPE)
             process.wait()
+            print('等待{0}秒'.format(sleep_time))
             time.sleep(sleep_time)
 
         self.screencap()
-        print('等待{0}秒'.format(sleep_time))
+
         print("afterwork playcard success")
 
 
