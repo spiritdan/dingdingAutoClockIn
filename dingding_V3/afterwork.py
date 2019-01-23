@@ -4,7 +4,7 @@ import schedule
 import holiday as holiday, DingDing as Ding
 import configparser
 import check_holiday
-
+ 
 config = configparser.ConfigParser(allow_no_value=False)
 config.read("dingding.cfg", encoding='utf-8')
 directory = config.get("ADB","directory")
