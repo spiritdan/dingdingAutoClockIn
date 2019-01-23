@@ -98,7 +98,7 @@ def string_toDatetime(st,seconds):
     new_dt=dt+ datetime.timedelta(seconds=int('+{0}'.format(seconds)))
     str_dt=new_dt.strftime("%H:%M")
     print('随机到：',str_dt,'开始')
-    return str_dt 
+    return str_dt
 
 def checkday():
     now = int(time.time())
